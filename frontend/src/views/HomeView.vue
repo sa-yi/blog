@@ -20,13 +20,10 @@
           @click="router.push({ name: 'post', params: { id: post.id } })">
 
           <h3>{{ post.title }}</h3>
-          <div class="meta">
-            <span>作者：{{ post.author }}</span>
-            <span>发布时间：{{ formatTime(post.createTime) }}</span>
-          </div>
           <p>{{ post.content.substring(0, 100) }}...</p>
-          <div class="tags">
-            <span v-for="tag in post.tags" :key="tag" class="tag">{{ tag }}</span>
+          <div class="meta">
+            <span class="author">作者：{{ post.author }}</span>
+            <span class="time">发布时间：{{ formatTime(post.createTime) }}</span>
           </div>
         </div>
       </div>
@@ -59,7 +56,6 @@ interface BlogPost {
   content: string;
   author: string;
   createTime: string;
-  tags: string[];
 }
 
 // 初始化加载
@@ -126,6 +122,10 @@ const formatTime = (timeString: string) => {
   margin: 0 auto;
   padding: 20px;
 }
+.home h1,
+.home h2 {
+  text-align: center;
+}
 
 /* 修改网格容器 */
 .grid-container {
@@ -153,9 +153,27 @@ const formatTime = (timeString: string) => {
   padding: 1.5rem;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  border: 1px solid rgba(0, 0, 0, 0.1); /* 新增边框 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto; /* 推动到底部 */
+  padding: 0 0.5rem;
+}
+
+.author {
+  margin-right: auto; /* 左对齐 */
+}
+
+.time {
+  margin-left: auto; /* 右对齐 */
 }
 
 /* 桌面端优化 */
