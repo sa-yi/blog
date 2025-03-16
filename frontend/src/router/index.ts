@@ -8,7 +8,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'home',
     component: HomeView,
   },
-  // 可以在这里添加其他路由
+  {
+    path: '/post/:id',
+    name: 'post',
+    component: () => import('../views/PostView.vue'),
+    props: true
+  }
 ];
 
 // 创建路由实例

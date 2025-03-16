@@ -6,13 +6,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class MyController {
-
+    static List<BlogPost> posts=new ArrayList<>();
+    static {
+        for (int i = 0; i < 10; i++) {
+            posts.add(new BlogPost((long) i, "title" + i, "content" + i, "author" + i, List.of("aa", "?")));
+        }
+    }
     @GetMapping("/hello")
     public String sayHello() {
         return "Hello from Spring Boot!";
@@ -20,16 +26,12 @@ public class MyController {
 
     @GetMapping("/posts")
     public List<BlogPost> getPosts() {
-        return List.of(
-                new BlogPost(1L, "Vue 3入门指南", "本文介绍Vue 3的基础用法...", "张三", List.of("前端", "Vue")),
-                new BlogPost(2L, "Spring Boot实践", "Spring Boot开发技巧分享...", "李四", List.of("后端", "Java")),
-                new BlogPost(3L, "aaaa", "Spring Boot开发技巧分享...", "李四", List.of("后端", "Java"))
-        );
+        return posts;
     }
 
     @GetMapping("/posts/{id}")
     public BlogPost getPostById(@PathVariable Long id) {
-        return new BlogPost(id, "示例文章", "这里是文章内容...", "管理员", List.of("示例"));
+        return posts.get(id.intValue());
     }
 
     @GetMapping("/categories")

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>欢迎来到我的技术博客！</h1>
-    
+
     <!-- 分类区域移出网格容器 -->
     <div class="categories">
       <h2>文章分类</h2>
@@ -12,11 +12,13 @@
       </div>
     </div>
 
-    <!-- 网格容器只包含文章列表 -->
-        <h2>最新文章</h2>
+
+    <h2>最新文章</h2>
     <div class="grid-container">
       <div class="post-list">
-        <div v-for="post in posts" :key="post.id" class="post-card">
+        <div v-for="post in posts" :key="post.id" class="post-card"
+          @click="router.push({ name: 'post', params: { id: post.id } })">
+
           <h3>{{ post.title }}</h3>
           <div class="meta">
             <span>作者：{{ post.author }}</span>
@@ -41,12 +43,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router'
 import axios from 'axios';
 
 // 响应式数据
 const message = ref<string>('');
 const posts = ref<BlogPost[]>([]);
 const categories = ref<Record<string, number>>({});
+const router = useRouter()
 
 // 类型定义
 interface BlogPost {
@@ -102,13 +106,18 @@ const formatTime = (timeString: string) => {
 </script>
 
 <style scoped>
-
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 /* 调整网格容器只包含文章列表 */
 .grid-container {
   display: grid;
   gap: 2rem;
-  margin-top: 2rem; /* 增加与分类区域的间距 */
+  margin-top: 2rem;
+  /* 增加与分类区域的间距 */
 }
 
 
@@ -121,33 +130,49 @@ const formatTime = (timeString: string) => {
 /* 修改网格容器 */
 .grid-container {
   width: 100%;
-  display: flex;         /* 改为弹性布局 */
-  justify-content: center; /* 居中内容 */
+  display: flex;
+  /* 改为弹性布局 */
+  justify-content: center;
+  /* 居中内容 */
 }
 
 /* 调整文章列表容器 */
 .post-list {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 自动适配列数 */
-  max-width: 1200px;     /* 限制最大宽度 */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* 自动适配列数 */
+  max-width: 1200px;
+  /* 限制最大宽度 */
   width: 100%;
-  padding: 0 20px;       /* 增加左右留白 */
+  padding: 0 20px;
+  /* 增加左右留白 */
+}
+
+.post-card {
+  padding: 1.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1); /* 新增边框 */
+  height: 100%;
 }
 
 /* 桌面端优化 */
 @media (min-width: 768px) {
   .post-list {
     gap: 2rem;
-    padding: 0 40px;     /* 增大桌面端留白 */
+    padding: 0 40px;
+    /* 增大桌面端留白 */
   }
-  
+
   .post-card {
     margin: 0;
     min-height: 250px;
-    transition: transform 0.2s; /* 添加悬停效果 */
+    transition: transform 0.2s;
+    /* 添加悬停效果 */
   }
-  
+
   .post-card:hover {
     transform: translateY(-5px);
   }
